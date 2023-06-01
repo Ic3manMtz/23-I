@@ -1,0 +1,81 @@
+%-----------Resumen
+\section*{Los números aleatorios y la ingeniería.}
+\subsection*{Reporte propio}
+	\noindent Para que la simulación sea posible es necesario contar con procedimientos capaces de producir números aleatorios; un número aleatorio es aquel que puede ser generado con igual de probabilidad y en forma  independiente de cualquier resultado previo.
+	
+	\subsubsection*{METODOS DE GENERACIÓN}
+	\noindent En primer lugar están los métodos manuales como: el de la ruleta y las tablas de números aleatorios . Tocker ha sugerido tres métodos para producir números aleatorios cuando se usan computadoras digitales: \textbf{provisión externa}; generación interna a partir de un proceso físico al azar y la generación interna de sucesiones de dígitos.\\ 
+	El primer método implica la grabación de tablas aleatorios, una objeción es la lentitud del proceso de entrada. El segundo método hace uso de una aditamento especial de la computadora capaz de registrar los resultados de algún proceso aleatorio; dentro de estos procesos aleatorios se incluyen el decaimiento de los materiales radioactivos y el ruido térmico de un circuito de válvulas electrónicas. El defecto es que los resultados no se pueden reproducir. El tercer método implica la generación de números pseudo aleatorios por medio de una ecuación recursiva algorítmica.
+	
+	 \subsubsection*{PROPIEDADES}
+	 \noindent Un generador debe: generar un número en el menor tiempo posible, no debe requerir grandes cantidades de memoria, debe ser capaz de producir un conjunto de números aleatorios diferentes; si produce el mismo número debe poder hacer correcciones y seguir adelante. Debe presentar un largo periodo, es decir, que la cantidad de números que se generan antes de que reaparezca la misma secuencia debe ser grande. Estos números deben cumplir lo siguiente:
+	 \begin{itemize}
+	 	\item Deben lucir como obtenidos de una distribución uniforme U(0,1), su media debe ser 1/2, la suma promedio de los cuadrados debe ser 1/3 y la suma promedio de los cubos debe ser 1/4.
+	 	\item Los números aleatorios deben ser independientes.
+	 \end{itemize} 
+	 
+	 \subsubsection*{TIPOS DE GENERADORES}
+	 \noindent Los podemos clasificar en: \textit{generadores basados en métodos de congruencia}; generadores compuestos y generadores de Tausworthe. Los generadores basados en métodos de congruencia se pueden explicar como: \textbf{U = V (mod T)}. Donde: \textbf{U} y \textbf{V} son números enteros. Si la expresión $(U - V)/T$ es un entero, entonces \textbf{U} es congruente a \textbf{V} con módulo en \textbf{T}. 
+	 
+	 \subparagraph*{GENERADORES CONGRUENTES LINEALES}
+	 \noindent Definidos por la relación $\mathnormal{Z_i = (a Z_i + C)(\mod m)}$. Donde \textbf{a} es un multiplicador, \textbf{C} el incremento y $\mathbf{Z_0}$ la semilla o valor inicial son valores no negativos y deben satisfacer $\mathnormal{0 < m,C < m, Z_0 < m, a < m}$.
+	 La longitud de un ciclo se denomina periodo (p). Si p = m, el generador es de periodo completo; para tener periodo completo es necesario seleccionar \textbf{a, m} y \textbf{C} considerando lo siguiente:
+	 \begin{itemize}
+	 	\item C debe ser impar y primo en relación con m. Para un computador binario $\mathnormal{c \mod 8 = 5}$, y para un computador decimal $\mathnormal{c\mod 200 = 21}$
+	 	\item a debe ser un entero impar, no divisible por 3 ó 5. a = 1 (mod p) si p es un factor primo de m. a = 1 (mod 4) si 4 es un factor de m.
+	 	\item m debe ser: $\mathnormal{2^b}$ para un computador binario y $\mathnormal{10^d}$ para uno decimal. \textbf{b} es el número de bits y \textbf{d} el número de dígitos decimales en una palabra. 
+	 \end{itemize}
+ 
+ 	\subparagraph*{GENERADORES COMPUESTOS}
+ 	\noindent Están basados en la combinación de otros generadores separados con la esperanza que el generador final presente mejor comportamiento estadístico. Inicialmente un vector \textbf{V} = $\mathnormal{(V_1V_2...V_k)}$ es llenado con los primeros \textbf{k} $U_1$ obtenidos del primer generador congruente lineal; luego el segundo generador es utilizado para generar un entero aleatorio distribuido uniformemente en los enteros de 1 hasta \textbf{k} y $\mathbf{V_1}$ es entregado como el primer número aleatorio de la serie; el primer generador entonces reemplaza la posición del entero generado por el segundo en \textbf{V} con su siguiente $\mathbf{U_i}$ y el segundo generador selecciona la siguiente posición del \textbf{V} actualizado. 
+ 	
+ 	\subparagraph*{GENERADORES DE TAUSWORTHE}
+ 	\noindent Este método opera de la siguiente manera: 
+ 	\begin{itemize}
+ 		\item Define una secuencia $\mathbf{b_1,b_2\dots}$ de dígitos binarios.
+ 		\item Se hace $\mathbf{b_i}=(C_1b_i+C_2b_i\dots+C_Rb_i)(\mod2)$, donde $C_1$ $C_2$\dots$C_R$ son cero o uno.
+ 		\item  Se agrupan $\mathbf{k}$ bits para formar un entero binario de longitud $\mathbf{k}$ con valor entre 0 y 2, el cual es divido por $2^k$, para dar el número U(0,1).
+ 	\end{itemize}
+ 
+	\subsubsection*{COMPROBACIÓN DE UN GENERADOR DE NÚMEROS ALEATORIOS}
+	\noindent Entre las pruebas más comúnmente utilizadas están las siguientes:
+	
+	\begin{itemize}
+		\item \textbf{Pruebas sobre la uniformidad de la distribución.} Se interesan por el grado de acuerdo con que existen entre la distribución de una muestra de números aleatorios generados y la distribución uniforme, ambas pruebas están basadas en la hipótesis nula. 
+		\item \textbf{Pruebas de corridas.} Implica el conteo del número actual de ocurrencias de corridas de diferente longitud y comparar estos valores a los esperados usando Chi-cuadrado.
+		\item \textbf{Pruebas de auto correlación.} Examinan la tendencia de los números de ir seguidos por otros números.
+		\item \textbf{Pruebas de huecos.} Cuenta el número de dígitos que aparecen entre repeticiones de un dígito en particular.
+		\item \textbf{Prueba de poker.} Analiza la frecuencia con la que se repiten los dígitos en números aleatorios individuales.
+		\item \textbf{Pruebas de series.} Comprueba el grado de aleatoriedad entre los números sucesivos en una serie se utiliza la estadística Chi-cuadrado.
+		\item \textbf{Pruebas de estadísticas en orden.} Verifica el valor máximo o mínimo de \textbf{n} números consecutivos o el rango de \textbf{n} valores consecutivos.
+	\end{itemize}
+	
+\newpage
+\subsection*{Reporte mejorado por ChatGPT}
+\noindent Para llevar a cabo una simulación es necesario contar con procedimientos capaces de generar números aleatorios. Un número aleatorio es aquel que puede ser generado con igual probabilidad e independientemente de cualquier resultado previo.
+
+Existen métodos manuales para generar números aleatorios, como el de la ruleta y las tablas de números aleatorios. Sin embargo, cuando se utilizan computadoras digitales, existen tres métodos sugeridos por Tocker para generar números aleatorios: provisión externa, generación interna a partir de un proceso físico al azar y la generación interna de sucesiones de dígitos.
+
+El primer método implica la grabación de tablas de números aleatorios, pero presenta la objeción de ser un proceso lento de entrada. El segundo método hace uso de un aditamento especial de la computadora capaz de registrar los resultados de algún proceso aleatorio, como el decaimiento de los materiales radioactivos y el ruido térmico de un circuito de válvulas electrónicas. Sin embargo, los resultados no se pueden reproducir. El tercer método implica la generación de números pseudoaleatorios por medio de una ecuación recursiva algorítmica.
+
+Para que un generador sea eficiente, debe cumplir con ciertas propiedades. Debe generar un número en el menor tiempo posible, no debe requerir grandes cantidades de memoria y debe ser capaz de producir un conjunto de números aleatorios diferentes. Además, si produce el mismo número, debe poder hacer correcciones y seguir adelante. Debe presentar un largo periodo, es decir, que la cantidad de números que se generan antes de que reaparezca la misma secuencia debe ser grande. Estos números deben cumplir con las siguientes características: deben lucir como obtenidos de una distribución uniforme U(0,1), su media debe ser 1/2, la suma promedio de los cuadrados debe ser 1/3 y la suma promedio de los cubos debe ser 1/4. Los números aleatorios también deben ser independientes.
+
+Los generadores pueden clasificarse en tres tipos: generadores basados en métodos de congruencia, generadores compuestos y generadores de Tausworthe. Los generadores basados en métodos de congruencia se definen por la relación Zi = (aZi + C)( mod m). La longitud de un ciclo se denomina periodo (p). Si p = m, el generador es de periodo completo. Para tener un periodo completo, es necesario seleccionar a, m y C de acuerdo con ciertas condiciones. Los generadores compuestos están basados en la combinación de otros generadores para obtener una mejor distribución estadística. Los generadores de Tausworthe generan números aleatorios dividiendo una secuencia binaria en subsecuencias más pequeñas y aplicando una fórmula algorítmica para obtener los números aleatorios.
+
+\newpage
+\subsection*{Reporte creado por ChatGPT}
+	\begin{quote}
+		Para este resumen intenté pegar el texto directamente, subir el texto a Google Docs y PasteBin para poder compartirlo con ChatGTP pero cada una de las veces hacía un resumen distinto sin relación al tema del texto original. A continuación hay uno de esos resúmenes.
+	\end{quote}
+	\noindent Este documento es una guía para la creación y gestión de una pequeña empresa, enfocada en los aspectos fundamentales que los emprendedores deben considerar al iniciar su negocio. El documento se divide en cinco secciones principales:\\
+	\begin{itemize}
+		\item Planificación: Se describen los pasos necesarios para definir la visión, misión, objetivos y estrategias de la empresa. También se explican las herramientas de planificación, como el análisis DAFO y el modelo Canvas.
+		\item Financiamiento: Se detallan las diferentes opciones de financiamiento para una pequeña empresa, como el capital propio, los préstamos bancarios, las subvenciones y el financiamiento colectivo. Se describen los requisitos necesarios para acceder a cada opción y se ofrecen consejos para elegir la mejor opción.
+		\item Marketing: Se explica cómo crear una estrategia de marketing efectiva, incluyendo la investigación de mercado, la segmentación de clientes, la selección de canales de comunicación y la creación de una marca.
+		\item Operaciones: Se analizan las diferentes opciones para la organización y gestión de los recursos humanos, así como la selección de proveedores y la gestión de inventarios.
+		\item Crecimiento: Se ofrece información sobre cómo expandir el negocio y mantener su rentabilidad a largo plazo, mediante la creación de nuevas líneas de productos, la diversificación de los canales de venta y la exploración de nuevos mercados.
+	\end{itemize}
+	
+	En cada sección, se presentan consejos prácticos y herramientas que los emprendedores pueden utilizar para desarrollar sus planes de negocio y gestionar su empresa de manera efectiva.
+
+\newpage

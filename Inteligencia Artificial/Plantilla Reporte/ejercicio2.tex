@@ -1,0 +1,51 @@
+%-----------Resumen
+\section*{Análisis de algoritmos de búsqueda en espacio de estados.}
+\subsection*{Grafos y dígrafos.}
+\noindent Los grafos son estructuras discretas que constan de vértices y aristas que conectan estos vértices.
+Un grafo G = \{V,E\} está formado por un conjunto de vértices, \textbf{V},  y un conjunto de aristas \textbf{E}. Cada arista es un par (u,v) donde u,v $\in V$. Algunas veces las aristas tienen una tercera componente, denominada peso o costo. Las aristas de un grafo pueden ser dirigidas o no dirigidas. Una arista (u,v) es dirigida de \textbf{u} a \textbf{v} si el par ordenado (u,v) es ordenado y \textbf{u} precede a \textbf{v}. Mientras que es no dirigida si es par (u,v) no es ordenado.\\
+\noindent Los grafos suelen  visualizarse trazando los vértices en forma de óvalos o rectángulos y las aristas como segmentos o curvas que unen pares de vértices. Si todas las aristas de un grafo son no dirigidas, es un grafo no dirigido; en el caso que todas sus aristas sean dirigidas es un grafo dirigido. Si el grafo tiene aristas dirigidas y no dirigidas se le llama grafo mezclado.
+\begin{description}
+    \item[-] \textbf{Adyacencia.} Dos vértices son adyacentes si están conectados por una arista. Los vértices adyacentes de un vértice se les llaman vecinos.
+    \item[-] \textbf{Caminos.} Es una secuencia de vértices $w_{1}$, $w_{2}$,...,$w_{n}$ tal que ($w_{i}$,$w_{i+1})$ $ \in E$ para 1$\le$ i$\le$ n. Donde n es el número de aristas en el camino, es decir, la longitud. Un grafo es conectado si hay al menos un camino desde cualquier vértice a otro vértice cualquiera. Si no existe un camino entre todos los vértices, es un grafo no conectado.
+\end{description}
+\noindent Un laberinto puede ser representado por un grafo, donde los pasillos del laberinto son las aristas y sus intersecciones los vértices del grafo. Esta representación nos brinda la posibilidad de analizar sólo la estructura del grafo; para aplicar la teoría de grafos, es necesario conocer la estructura del grafo e incluso tomar en cuenta ciertas propiedades para poder decidir que algoritmos son los más adecuados para su implementación. Saber estas propiedades nos permite aplicar el recorrido de grados para encontrar la conexión entre dos nodos. Entre los algoritmos que se pueden aplicar estań: \textit{primera búsqueda en amplitud (BFS), primera búsqueda en profundidad (DFS), Dikjstra y S-Star}.\\
+
+\subsection*{Algoritmos de búsqueda.}
+\noindent Es posible encontrar la ruta con el menor costo posible entre dos puntos dados. Debido a que en un laberinto se puede modelar también como un arreglo bidimensional de N x M, en la que hay celdas libres y celdas pared; un laberinto es un área de dos dimensiones en forma de rejilla de cualquier tamaño.
+\begin{description}
+    \item[-]\textbf{Algoritmo de búsqueda en amplitud.} Etiqueta todas las celdas, buscando la celda del final en todos sus vecinos adyacentes. Si no llega a la celda "T", la búsqueda continua hacia habitaciones adyacentes encontradas a partir de la habitación inicial; hasta que la celda "T" sea localizada. A continuación se muestran los pasos que sigue.
+    \begin{enumerate}
+        \item Etiquetar la celda de inicio como 0.
+        \item i=0.
+        \item Para cada celda etiquetada con i, etiquete todas las celda adyacentes no etiquetadas con i+1. Si no hay celdas adyacentes, parar.
+        \item Si alguna de las celdas recién etiquetadas es la celda objetivo, terminar; una "ruta" solución ha sido encontrada.
+        \item i=i+1.
+        \item Ir al paso 3.
+    \end{enumerate}
+    
+    \item[-]\textbf{Algoritmo de búsqueda en profundidad.} Etiqueta todas las habitaciones como no visitadas, usa una pila para recordar donde debe ir cuando no alcanza un extremo muerto. Este algoritmo encuentra un camino si existe, y se puede aplicar a laberintos de conexión simple o múltiple (tiene circuitos internos), pero no garantiza dar la ruta más corta. Para empezar se elige una habitación inicial "S" y final "T" para poder seguir las siguientes reglas:
+    \begin{description}
+        \item[ ]\textbf{Regla 1.} Si es posible, visitar una habitación (si hay más de una se elije una al azar) adyacente no visitado, marcarlo como visitado, si la celda es la objetivo, terminar.
+        \item[ ]\textbf{Regla 2.} Si no se puede aplicar la regla 1, entonces, si es posible, regresar a la última bifurcación.
+        \item[ ]\textbf{Regla 3.} Si no se puede aplicar las reglas anteriores, el proceso ha terminado
+    \end{description}
+
+    \item[-]\textbf{Algoritmo de Nayfeth.} Un laberinto se puede representar como un arreglo bidimensional con valores "1" y "0" representando paredes y pasillos. Cada celda tiene vecinos adyacentes en cuatro dimensiones: \textit{Norte, Sur, Este y Oeste}.\\
+    Para empezar se elige una celda inicial E y final S, ambas tienen "0", estas deben ser distintas. El algoritmo bloquea todos los puntos muertos en el laberinto y cada celda libre es accesible solamente en una dirección; las celdas libres se hacen nuevas celdas pared. Este procedimiento se repite hasta que el "espacio de búsqueda" queda sin cambios, es decir que las únicas celdas libres son la solución del laberinto. Este algoritmo no funciona adecuadamente para laberintos de conexión múltiple. Se basa en las siguientes reglas: 
+    \begin{description}
+        \item[ ]\textbf{Regla 1.} Las celdas pared no cambian.
+        \item[ ]\textbf{Regla 2.} Las celdas libres, se vuelven pared si tienen tres o más vecinos pared.
+        \item[ ]\textbf{Regla 3.} Las celdas libres permanecen igual si tiene menos de tres celdas pared.
+    \end{description}
+    
+    \item[-]\textbf{Algoritmo A-Star.} Utiliza una búsqueda heurística para encontrar la ruta óptima entre dos puntos. Maneja tres funciones: F, G y H. Donde:
+    \begin{description}
+        \item[ ] La función \textbf{G} es el costo del mejor camino desde la celda inicial a la celda \textbf{n} hasta el momento durante la búsqueda.
+        \item[ ] La función \textbf{H} es el costo del camino más corto desde la celda \textbf{n} a la celda objetivo más cercana \textbf{n}.
+        \item [ ] F = G + H, es decir,  F es el costo del camino más corto desde la celda inicial a la celda objetivo.
+    \end{description}
+    \noindent El costo de la función \textbf{H}, se calcula con una distancia de Manhattan, que consiste en sumar la cantidad de bloques en horizontal y vertical que restan para llegar a la meta y multiplicar por el costo que tiene asignado este tipo de movimientos.
+\end{description}
+
+
+\newpage

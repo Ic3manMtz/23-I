@@ -1,0 +1,59 @@
+%-----------Resumen
+\section*{Generación automática de variantes de trayectorias aplicada al diseño óptimo bajo criterios múltiples de redes hidráulicas de abasto.}
+\noindent En la geometría computacional obtener la mejor triangulación de la nube de puntos significa que se consideran todos los segmentos posibles entre puntos. La selección adecuada da como resultado un conjunto de triángulos óptimos, entendiendo por tales, aquellos que tienen los ángulos más abiertos posibles. Uno de los métodos más utilizados para realizar las triangulación es el método \textbf{Delaunay}.
+
+\subsection*{Distribución en planta de trayectorias}
+\noindent El problema de optimizar la distribución en planta de trayectorias está orientado a disminuir los costos de inversión y operación, y puede ser abordado desde dos puntos de vista: el primero supone una total libertad para ejecutar el trazado de la trayectoria en el espacio físico previsto; el segundo consiste en la selección de posibles alternativas de trazado sobre zonas públicas y de paso. El conjunto de alternativas suele ser discreto y el problema se limita a seleccionar la alternativa más económica durante la optimización de la distribución en planta de redes urbanas de distribución.\\ \\
+\noindent Un grafo \textbf{G} es una dupla \textbf{G = (V,A)} donde \textbf{V} es un conjunto no vació de vértices y \textbf{A} es un conjunto de aristas. Cada arista es un par de (v,w) donde v, w pertenecen a \textbf{V}. A su vez pueden ser clasificados como \textit{grafo dirigido} y \textit{grafo no dirigido}; en el segundo las aristas no están ordenadas, es decir; (v,w) = (w,v). Un vértice w es \textbf{adyacente} a v si y solo si (v,w) pertenece a \textbf{A}.\\
+El camino de un vértice $w_{1}$ hacia $w_{q}$ es una secuencia $w_{1}$, $w_{2}$,...,$w_{q}$ $\in V$, tal que todas las aristas ($w_1$,$w_2$),...,($w_{q-1}$,$w_q$) $\in A$. La longitud de un camino se define por un número determinado de aristas del camino (número de nodos-1); se conoce como camino simple, aquel en que todos los vértices son distintos y ciclo, aquel camino en el cual el primer y último vértice son iguales. Se denomina ciclo simple si es camino es simple.\\ \\
+\noindent Un grafo es conexo o conectado si existe un camino entre cualquier par de vértices y es completo si existe una arista entre cualquier par de vértices. Es etiquetado si asociamos a cada arista un peso o valor.
+
+\begin{description}
+    \item[ ]\textbf{Representación del grafo mediando matrices de adyacencia.} El conjunto de aristas es representado mediante una matriz M[vértices, vértices] de boléanos, donde M[v,w]=1, si y solo si (v,w) pertenece a A; tomará un valor nulo si no existe arista, si está etiquetado la matriz será de elementos de ese tipo.
+    \item[ ]\textbf{Representación mediante listas de adyacencia.} Para cada nodo de V tendremos una lista de aristas que parten de ese vértice. Estas listas están guardadas en un arreglo de vértices cabecera. En un Grafo etiquetado se añade un nuevo campo a los elementos de la lista. Si el grafo es no dirigido entonces cada arista (v, w) será representada dos veces, en la lista de v y en la de w.
+\end{description}
+
+\subsection*{Recorrido sobre grafos}
+\noindent Se desarrolla para visitar los vértices y las aristas de manera sistemática y puede efectuarse de las formas siguientes:
+\begin{description}
+    \item[]\textbf{Búsqueda primero en profundida.} Es equivalente a un recorrido en preorden de un árbol. Se elige un vértice v de partida. Se marca como visitado y se recorren los vértices no visitados adyacentes a v, usando recursivamente la búsqueda primero en profundidad.
+    \item[ ]\textbf{Búsqueda primero en amplitud o anchura.} Es equivalente a recorrer un árbol por niveles. Dado un vértice v, se visitan primero todos los vértices adyacentes a v, luego todos los que están a distancia 2 (y no visitados), a distancia 3, y así sucesivamente hasta recorrer todos los vértices.
+\end{description}
+
+\subsection*{Procedimiento general de preparación de decisiones}
+\noindent A continuación se listan los pasos generales del procedimiento:
+\begin{description}
+    \item[-]\textbf{Determinación del trazado de la red cerrada de mayor cantidad de ciclos.} Es decir que a partir de los vértices definidos se construye la red mallada de mayor cantidad de ciclos, garantizando la conexión de todos los vértices a partir de la mayor cantidad posible de aristas de forma tal que estos no se crucen formando una malla triangular. Para esto se aplica el método Delaunay.
+    \item[-]\textbf{Modificación de la red desarrollada con ayuda del sistema a criterio del usuario.} El sistema adecuará los tramos obtenidos para evitar intersecciones con elementos preestablecidos.
+    \item[-]\textbf{Determinación de la red mínima priorizada.} Un criterio importante para obtener menos pérdidas es minimizar la longitud de las aristas.
+    \item[-]\textbf{Problema del árbol generador mínimo (AGM).} Para minimizar la longitud de la red nunca será conveniente tener un ciclo ya que se puede prescindir de una de las aristas que forman parte del ciclo sin destruir la conectividad de la red y de esta manera disminuir la longitud de la misma. Para encontrar el árbol generador mínimo de un grafo es la utilización de algoritmos golozos si se tienen en cuenta las siguientes consideraciones:
+    \begin{itemize}
+        \item Un árbol con n vértices tiene exactamente n-1 aristas.
+        \item Siempre existe un único camino entre dos vértices de un árbol.
+        \item Agregar una arista cualquiera a un árbol crea un ciclo, eliminando cualquier arista de este ciclo se recupera el árbol.
+    \end{itemize}
+    \noindent Estos algoritmos permiten resolver problemas de optimización en forma extremadamente sencilla, en algunos problemas generan una solución óptima pero en otros lamentablemente tal cosa no es posible. Para que sea óptimo deben darse dos condiciones: el problema debe poder dividirse en sub-problemas, y debe ser posible demostrar que existe al menos una solución óptima que comienza con la decisión golosa.
+    \item[-]\textbf{Implementación del Algoritmo Kruskal para determinar el árbol de expansión de costo mínimo dado un grafo ponderado no dirigido.} Dado un grafo ponderado G=(V, A), el algoritmo parte de un grafo G’= (V, Ø). Cada vértice es una componente conexa en sí misma. Necesita que las aristas estén ordenadas según el coste y operaciones para saber si dos vértices están en la misma componente conexa y para unir componentes. En cada paso de ejecución se elige la arista de menor costo de A dónde:
+    \begin{itemize}
+        \item Si une dos vértices que pertenecen a distintas componentes conexas entonces se añade al árbol de expansión G’.
+        \item En otro caso no se coge, ya que formaría un ciclo en G’.
+    \end{itemize}
+    \noindent El algoritmo concluye cuando G’ sea conexo: cuando se obtiene n-1 aristas. A continuación se ve la estructura del algoritmo:
+    \begin{itemize}
+        \item[$\Rightarrow$] Sea T de tipo Conjunto de aristas, el lugar donde se guardarán las aristas del árbol de expansión. Asignar T a $\varnothing$.
+        \item[$\Rightarrow$] Mientras T contenga menos de n-1 aristas hacer:
+        \begin{itemize}
+            \item Elegir la arista (v, w) de A con menor costo.
+            \item Borrar (v, w) de A.
+            \item Si v, w están en distintos componentes conexos entonces añadir (v, w) a T. En otro caso descartar (v,w).
+        \end{itemize}
+    \end{itemize}
+    \newpage
+    \item[-]\textbf{Generación de variantes de trayectoria de redes malladas.} A partir de la red de mayor cantidad de ciclos se analiza la posibilidad de eliminar aquellas aristas que no pertenezcan a la red priorizada de manera tal que genere el menor circuito de los posibles. Para ellos se aplican algoritmos para el recorrido de grafos. De esta manera se calcula la distancia mínima desde un vértice dado hasta cualquier otro; aplicando el principio de optimalidad que plantea que si un camino es mínimo entonces todos  sus subcaminos también lo son. La cantidad de tramos incidentes en dicho nodo sea mayor o igual a 2, esto garantiza que se mantenga la condición de red cerrada.
+    \item[-]\textbf{Generación de soluciones de diseño que resultan próximas al criterio de eficiencia del decidor.} Se obtiene la cadena con tantos dígitos como tramos halla, donde cada dígito codifica el diámetro a utilizar en el tramos correspondiente. Todas las variantes de redes generadas en las diferentes soluciones generadas en el proceso de búsqueda por el algoritmo de búsqueda por exploración aleatoria del extremo de una función de código variable.
+    \item[-]\textbf{Selección de la solución que satisface de la mejor manera el criterio completo de preferencias del decidor.} A partir de bondades gráficas que brinda el sistema se pueden visualizar las solución que satisfacen de la mejor manera el criterio completo de preferencias del decidor esto permiten lograr una adecuada integración entre indicadores de eficiencia formalizables y factores del tipo subjetivo.
+    \item[-]\textbf{Elaboración de planos, informes y datos técnicos.} Se realiza el proceso de laboración de la documentación necesaria. Esto incluye la elaboración de planos, informe de materiales y tablas de datos técnicos según los requerimientos de las normas empresariales.
+\end{description}
+\noindent La implementación de algoritmos en problemas de grafos y la ilustración gráfica de las variantes de trayectoria facilitarán al diseñador la toma de decisiones constructivas con gastos mínimos de tiempo y con la precisión requerida
+
+\newpage
