@@ -1,0 +1,18 @@
+Notas para la práctica 4
+
+Actividad B
+-El número de productores y el de consumidores debe ser el mismo
+
+Actividad C
+-Arquitectura de Prethreading, es decir, que ya se tiene un pool de hilos creados antes, la 
+  cantidad de hilos pre creados debe estar dado por una constante.
+
+-Solo hay un productor por lo que no es necesario tener el mutex de los productores.
+
+-Protolo de cierre. El productor tiene que avisar que ya termino, meteŕa en el buffer un viaje
+  con id -1 por cada hilo taxi que tiene.
+
+Actividad D
+-Arquitectura de Pipeline, es decir, es una cadena de suministros 
+
+-El hilo de en medio se comporta como consumidor del primer buffer y como productor del segundo
