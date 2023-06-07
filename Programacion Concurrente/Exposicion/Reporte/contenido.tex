@@ -1,4 +1,4 @@
-\section*{Prueba en windows}
+\section*{Introducción}
 
 JCSP (Communicating Sequential Processes for Java) es una librería de concurrencia diseñada para el lenguaje de programación Java. Proporciona un modelo de concurrencia basado en procesos secuenciales que se comunican entre sí mediante canales. Esta librería es una implementación del modelo CSP (Communicating Sequential Processes) creado por Tony Hoare.
 
@@ -34,59 +34,68 @@ as de estas herramientas son:
 \section*{Ejemplo mínimo}
 A continuación se muestra un ejemplo mínimo de cómo utilizar JCSP para crear dos procesos que se comunican entre sí:
 
-```java
+\begin{lstlisting}[language=Java, frame=single]
 import org.jcsp.lang.*;
-
-public class EjemploJCSP {
-	public static void main(String[] args) {
-		// Crear canales de comunicación
-		One2OneChannel channel1 = Channel.one2one();
-		One2OneChannel channel2 = Channel.one2one();
-		
-		// Crear procesos
-		new ProcessA(channel1.out(), channel2.in()).run();
-		new ProcessB(channel2.out(), channel1.in()).run();
-	}
 	
-	static class ProcessA implements CSProcess {
-		private ChannelOutput out;
-		private ChannelInput in;
-		
-		public ProcessA(ChannelOutput out, ChannelInput in) {
-			this.out = out;
-			this.in = in;
-		}
-		
-		public void run() {
-			// Enviar mensaje al proceso B
-			out.write("Hola, proceso B!");
+public class EjemploJCSP
+{
+  public static void main(String[] args)
+  {
+    // Crear canales de comunicacion
+	One2OneChannel channel1 = Channel.one2one();
+	One2OneChannel channel2 = Channel.one2one();
+					
+	// Crear procesos
+	new ProcessA(channel1.out(), channel2.in()).run();
+	new ProcessB(channel2.out(), channel1.in()).run();
+  }
 			
-			// Recibir respuesta del proceso B
-			String respuesta = (String) in.read();
-			System.out.println("Proceso A recibe: " + respuesta);
-		}
-	}
-	
-	static class ProcessB implements CSProcess {
-		private ChannelOutput out;
-		private ChannelInput in;
-		
-		public ProcessB(ChannelOutput out, ChannelInput in) {
-			this.out = out;
-			this.in = in;
-		}
-		
-		public void run() {
-			// Recibir mensaje del proceso A
-			String mensaje = (String) in.read();
-			System.out.println("Proceso B recibe: " + mensaje);
+  static class ProcessA implements CSProcess
+  {
+      private ChannelOutput out;
+	  Private ChannelInput in;
+				
+    public ProcessA(ChannelOutput out, ChannelInput in)
+    {
+      this.out = out;
+	  this.in = in;
+    }
+				
+    public void run()
+    {
+      // Enviar mensaje al proceso B
+	  out.write("Hola, proceso B!");
+					
+      // Recibir respuesta del proceso B
+      String respuesta = (String) in.read();
+      System.out.println("Proceso A recibe: "+respuesta);
+    }
+  }
 			
-			// Enviar respuesta al proceso A
-			out.write("Hola, proceso A!");
-		}
+  static class ProcessB implements CSProcess
+  {
+    private ChannelOutput out;
+	private ChannelInput in;
+				
+	public ProcessB(ChannelOutput out, ChannelInput in)
+	{
+	  this.out = out;
+	  this.in = in;
 	}
+				
+	public void run()
+	{
+	  // Recibir mensaje del proceso A
+	  String mensaje = (String) in.read();
+	  System.out.println("Proceso B recibe: " + mensaje);
+			
+	  // Enviar respuesta al proceso A
+	  out.write("Hola, proceso A!");
+	}
+  }
 }
-```
+	
+\end{lstlisting}
 
 En este ejemplo, se crean dos procesos: ProcessA y ProcessB. Utilizan dos canales de comunicación, channel1 y channel2, para enviar mensajes entre sí. ProcessA envía un mensaje a ProcessB a través de channel1 y recibe la respuesta a través de channel2. ProcessB recibe el mensaje de ProcessA a través de channel2 y envía una respuesta a través de channel1.
 
