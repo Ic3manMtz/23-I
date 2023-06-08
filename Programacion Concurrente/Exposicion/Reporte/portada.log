@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2023.6.6)  7 JUN 2023 08:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2023.6.6)  8 JUN 2023 10:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -238,45 +238,85 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 (contenido.tex [1
 
-{C:/Users/molap/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] (S:\MiKTeX\t
-ex/latex/listings\lstlang1.sty
+{C:/Users/molap/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 12--19
+
+ []
+
+
+Overfull \hbox (31.32785pt too wide) in paragraph at lines 12--19
+\OT1/cmr/m/n/10.95 como canales (One2OneChannel, Any2OneChannel, One2AnyChannel
+, Any2AnyChannel),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 12--19
+
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 21--25
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 21--25
+
+ []
+
+[3] [4] (S:\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
-) [2]
-LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 4
-1.
+)
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 6
+4.
 
 (S:\MiKTeX\tex/latex/base\omscmr.fd
 File: omscmr.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 41.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [3]
-Overfull \hbox (2.4356pt too wide) in paragraph at lines 90--92
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 64.
+ [5]
+Overfull \hbox (2.4356pt too wide) in paragraph at lines 113--115
 [][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-) [4] (portada.aux) ) 
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.123 E
+       n este ejemplo, se crean dos procesos: ProcessA y ProcessB. Utilizan ...
+
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6])
+[7] (portada.aux) ) 
 Here is how much of TeX's memory you used:
- 4581 strings out of 476331
- 64516 string characters out of 5804181
- 1899660 words of memory out of 5000000
- 24981 multiletter control sequences out of 15000+600000
+ 4582 strings out of 476331
+ 64530 string characters out of 5804181
+ 1898660 words of memory out of 5000000
+ 24982 multiletter control sequences out of 15000+600000
  519542 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,7n,62p,570b,1733s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\molap\AppData\Local\MiKTeX\fonts/pk/ljfour/jkna
-ppen/ec/dpi600\tcrm1095.pk><S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb
-><S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><S:/MiKTeX/fonts/type1/pu
-blic/amsfonts/cm/cmcsc10.pfb><S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.p
-fb><S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><S:/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmsl10.pfb><S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.p
-fb><S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on portada.pdf (4 pages, 122793 bytes).
+ 57i,7n,62p,880b,1717s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\molap\AppData\Local\MiKTeX\fonts/pk/ljfour/jknapp
+en/ec/dpi600\tcrm1095.pk><S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
+S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><S:/MiKTeX/fonts/type1/publ
+ic/amsfonts/cm/cmcsc10.pfb><S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb
+><S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><S:/MiKTeX/fonts/type1/pub
+lic/amsfonts/cm/cmsl10.pfb><S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+><S:/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on portada.pdf (7 pages, 135519 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
+ 72 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
