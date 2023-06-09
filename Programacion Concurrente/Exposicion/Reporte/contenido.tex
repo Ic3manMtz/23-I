@@ -29,6 +29,8 @@ JCSP soporta principalmente el modelo de comunicación por paso de mensajes sinc
 \begin{itemize}
 	\item\textbf{Comunicación síncrona:} Los procesos se sincronizan en los canales, de modo que el emisor se bloquea hasta que el receptor esté listo para recibir el mensaje.
 	
+	\item\textbf{Comunicación asíncrona:} Los procesos no se bloquean al enviar o recibir mensajes a través de los canales. Esto permite una comunicación más rápida, pero puede dar lugar a condiciones de carrera si no se realiza una sincronización adecuada.
+	
 	\item\textbf{Comunicación por eventos:} JCSP también admite la comunicación basada en eventos, donde los procesos pueden enviar y recibir eventos para coordinar su ejecución.
 	
 	\item\textbf{Comunicación punto a punto:} Se utiliza un canal unidireccional entre dos procesos, donde uno envía y otro recibe mensajes. El envío y la recepción son operaciones bloqueantes, es decir, el emisor espera hasta que el receptor esté listo para recibir el mensaje, y viceversa.
@@ -56,11 +58,35 @@ JCSP proporciona diversas herramientas de sincronización para facilitar la coor
 \end{itemize}
 
 \section*{Ejemplo mínimo}
-A continuación se muestra un ejemplo mínimo de cómo utilizar JCSP para crear dos procesos que se comunican entre sí:
+Recapitulando podemos decir que en JCSP, el canal tiene las siguiente características:
+\begin{itemize}
+	\item Un canal es un objeto que permite la comunicación entre procesos concurrentes, siguiendo el modelo de comunicación sincrónica y unidireccional.
+	
+	\item Un canal tiene dos extremos: uno para enviar y otro para recibir datos. Cada extremo puede ser usado por un solo proceso.
+	
+	\item Un canal puede ser de tipo One2One (un emisor y un receptor), Any2One (varios emisores y un receptor), One2Any (un emisor y varios receptores) o Any2Any (varios emisores y receptores)1.
+	Un canal puede ser síncrono (el emisor y el receptor deben estar listos al mismo tiempo para comunicarse) o asíncrono (el emisor puede enviar datos sin esperar al receptor, usando un buffer intermedio).
+	
+	\item Un canal puede tener guardas que permiten seleccionar entre varios canales disponibles para comunicarse, usando una estructura ALT.
+\end{itemize}
+
+\noindent Los eventos son una forma de comunicación no determinista, ya que el proceso puede reaccionar a cualquier evento que ocurra primero; son una forma de comunicación síncrona, ya que el proceso se bloquea hasta que se produce algún evento. El proceso solo recibe datos del evento, pero no envía nada, por lo que es una forma de comunicación unidireccional. Los mensajes tienen las siguientes características:
+\begin{itemize}
+	\item Un mensaje es un dato que se envía o se recibe a través de un canal.
+	
+	\item Un mensaje puede ser de cualquier tipo: un número, una cadena, un objeto, etc.
+	
+	\item Un mensaje puede tener un tamaño máximo de 64 KB.
+	
+	\item Un mensaje puede ser síncrono (el emisor espera a que el receptor reciba el dato) o asíncrono (el emisor no espera al receptor y continúa su ejecución).
+	
+	\item Un mensaje puede ser univaluado (contiene un solo valor) o multivaluado (contiene varios valores separados por comas)
+\end{itemize}
+
+\noindent A continuación se muestra un ejemplo mínimo de cómo utilizar JCSP para crear dos procesos que se comunican entre sí:
 \begin{lstlisting}[language=Java, frame=single, caption={Ejemplo JCSP}]
 	
-public static void main(String[] args)
-{
+public static void main(String[] args){
   //Crear los canales de comunicacion
   Any2OneChannel<String> canal1=Channel.any2one();
   Any2OneChannel<String> canal2=Channel.any2one();
@@ -76,21 +102,20 @@ public static void main(String[] args)
   parallel.run();
 }
 	
+	
+	
 // Proceso 1
-static class Proceso1 implements CSProcess
-{
+static class Proceso1 implements CSProcess{
   private ChannelOutput<String> salida;
   private ChannelInput<String> entrada;
 		
   public Proceso1(ChannelOutput<String> salida, 
-  				ChannelInput<String> entrada)
-  {
+  				ChannelInput<String> entrada){
     this.salida=salida;
 	this.entrada=entrada;
   }
 		
-  public void run()
-  {
+  public void run(){
     // Enviar un mensaje al proceso 2
     salida.write("Hola desde Proceso 1");
 			
@@ -101,25 +126,21 @@ static class Proceso1 implements CSProcess
 }
 	
 // Proceso 2
-static class Proceso2 implements CSProcess
-{
+static class Proceso2 implements CSProcess{
   private ChannelOutput<String> salida;
   private ChannelInput<String> entrada;
 		
   public Proceso2(ChannelOutput<String> salida,
-  				ChannelInput<String> entrada)
-  {
+  				ChannelInput<String> entrada){
     this.salida=salida;
     this.entrada=entrada;
   }
 		
-  public void run()
-  {
+  public void run(){
     // Esperar el mensaje del proceso 1
     String mensaje=entrada.read();
-			
     System.out.println("Proceso 2 recibió: " + mensaje);
-			
+		
     // Responder al proceso 1
     salida.write("Hola desde Proceso 2");
   }
