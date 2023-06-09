@@ -57,71 +57,88 @@ JCSP proporciona diversas herramientas de sincronización para facilitar la coor
 
 \section*{Ejemplo mínimo}
 A continuación se muestra un ejemplo mínimo de cómo utilizar JCSP para crear dos procesos que se comunican entre sí:
-\begin{lstlisting}[language=Java, frame=single]
-import org.jcsp.lang.*;
+\begin{lstlisting}[language=Java, frame=single, caption={Ejemplo JCSP}]
 	
-public class EjemploJCSP
+public static void main(String[] args)
 {
-  public static void main(String[] args)
+  //Crear los canales de comunicacion
+  Any2OneChannel<String> canal1=Channel.any2one();
+  Any2OneChannel<String> canal2=Channel.any2one();
+
+  // Crear los procesos
+  CSProcess proceso1=new Proceso1(canal1.out(),canal2.in());
+  CSProcess proceso2=new Proceso2(canal2.out(),canal1.in());
+		
+  // Ejecutar los procesos en paralelo
+  Parallel parallel=new Parallel();
+  parallel.addProcess(proceso1);
+  parallel.addProcess(proceso2);
+  parallel.run();
+}
+	
+// Proceso 1
+static class Proceso1 implements CSProcess
+{
+  private ChannelOutput<String> salida;
+  private ChannelInput<String> entrada;
+		
+  public Proceso1(ChannelOutput<String> salida, 
+  				ChannelInput<String> entrada)
   {
-    // Crear canales de comunicacion
-	One2OneChannel channel1 = Channel.one2one();
-	One2OneChannel channel2 = Channel.one2one();
-					
-	// Crear procesos
-	new ProcessA(channel1.out(), channel2.in()).run();
-	new ProcessB(channel2.out(), channel1.in()).run();
+    this.salida=salida;
+	this.entrada=entrada;
   }
-			
-  static class ProcessA implements CSProcess
+		
+  public void run()
   {
-      private ChannelOutput out;
-	  Private ChannelInput in;
-				
-    public ProcessA(ChannelOutput out, ChannelInput in)
-    {
-      this.out = out;
-	  this.in = in;
-    }
-				
-    public void run()
-    {
-      // Enviar mensaje al proceso B
-	  out.write("Hola, proceso B!");
-					
-      // Recibir respuesta del proceso B
-      String respuesta = (String) in.read();
-      System.out.println("Proceso A recibe: "+respuesta);
-    }
+    // Enviar un mensaje al proceso 2
+    salida.write("Hola desde Proceso 1");
+			
+    // Esperar la respuesta del proceso 2
+    String respuesta = entrada.read();
+    System.out.println("Proceso 1 recibió: " + respuesta);
   }
-			
-  static class ProcessB implements CSProcess
+}
+	
+// Proceso 2
+static class Proceso2 implements CSProcess
+{
+  private ChannelOutput<String> salida;
+  private ChannelInput<String> entrada;
+		
+  public Proceso2(ChannelOutput<String> salida,
+  				ChannelInput<String> entrada)
   {
-    private ChannelOutput out;
-	private ChannelInput in;
-				
-	public ProcessB(ChannelOutput out, ChannelInput in)
-	{
-	  this.out = out;
-	  this.in = in;
-	}
-				
-	public void run()
-	{
-	  // Recibir mensaje del proceso A
-	  String mensaje = (String) in.read();
-	  System.out.println("Proceso B recibe: " + mensaje);
+    this.salida=salida;
+    this.entrada=entrada;
+  }
+		
+  public void run()
+  {
+    // Esperar el mensaje del proceso 1
+    String mensaje=entrada.read();
 			
-	  // Enviar respuesta al proceso A
-	  out.write("Hola, proceso A!");
-	}
+    System.out.println("Proceso 2 recibió: " + mensaje);
+			
+    // Responder al proceso 1
+    salida.write("Hola desde Proceso 2");
   }
 }
 	
 \end{lstlisting}
-\\
-En este ejemplo, se crean dos procesos: ProcessA y ProcessB. Utilizan dos canales de comunicación, channel1 y channel2, para enviar mensajes entre sí. ProcessA envía un mensaje a ProcessB a través de channel1 y recibe la respuesta a través de channel2. ProcessB recibe el mensaje de ProcessA a través de channel2 y envía una respuesta a través de channel1.
+En este ejemplo, se crean dos canales de comunicación (canal1 y canal2) utilizando la clase Any2OneChannel de JCSP. Estos canales se utilizan para establecer la comunicación entre los dos procesos Proceso1 y Proceso2.
+\begin{enumerate}
+	\item El Proceso1 envía el mensaje "Hola desde Proceso 1" al Proceso2 a través del canal1. Luego, espera a recibir la respuesta del Proceso2 a través del canal2.
+	
+	\item El Proceso2 espera a recibir el mensaje del Proceso1 a través del canal2. Luego, muestra el mensaje recibido y responde al Proceso1 enviando "Hola desde Proceso 2" a través del canal1.
+\end{enumerate}
 
+\noindent Al ejecutar el programa, verás la salida que muestra los mensajes intercambiados entre los dos procesos:
+
+\begin{lstlisting}[frame=single, caption={Salida en termianl}]
+	Proceso 2 recibió: Hola desde Proceso 1
+	Proceso 1 recibió: Hola desde Proceso 2
+\end{lstlisting}
 \section*{Conclusiones}
 JCSP ofrece una biblioteca sólida y eficiente para la programación concurrente en Java, basada en el modelo de concurrencia CSP. Permite crear procesos concurrentes y establecer una comunicación segura entre ellos mediante canales. Además, proporciona herramientas de sincronización y soporte para la creación de Elementos Activos. Utilizar JCSP puede mejorar la concurrencia y la eficiencia de las aplicaciones Java, evitando problemas comunes asociados con la concurrencia, como condiciones de carrera y bloqueos.\\
 Por otro lado, es importante tener en cuenta que el modelo CSP es abstracto y matemático, por lo que no tiene en cuenta aspectos prácticos como el rendimiento, la escalabilidad, la tolerancia a fallos o la distribución de los procesos. Además, requiere que los procesos se comuniquen mediante canales sincrónicos, lo que puede generar bloqueos o ineficiencias si los procesos no están disponibles o tienen diferentes velocidades de ejecución. Es decir, CSP no proporciona soporte para la comunicación asíncrona, la movilidad de los procesos ni la dinámica de creación y terminación de los mismos. Esto puede resultar complejo o poco intuitivo para los programadores que están acostumbrados a otros paradigmas o lenguajes de programación concurrente.
