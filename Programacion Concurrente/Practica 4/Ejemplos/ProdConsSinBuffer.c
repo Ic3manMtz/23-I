@@ -21,7 +21,7 @@ int main()
     /* Se crea el hilo que lee la solicitud del cliente */
     pthread_create( &thread1, NULL,  
                     (void *) &Lee, (void *)(intptr_t)4);
-   
+
     /* Se crea el hilo que procesa la solicitud del cliente */
     pthread_create(&thread2, NULL,  
                     (void *) &Procesa, (void *)(intptr_t)4);
@@ -38,39 +38,26 @@ int main()
 
 }
 
-
-/* 
-*/
-void Lee( void *ptr ) 
-{ 
-     int iteraciones, i; 
-     iteraciones = (intptr_t) ptr; 
-     for (i = 0; i < iteraciones ; i++) 
-         {  
-            sem_wait(&trabajador_listo);
-            printf("Lector: Dame el siguiente número a procesar:");
-		    scanf("%d",&dato);
-            printf("Lector: Recibi %d\n", dato);
-            sem_post(&dato_listo);
-            
-         } 
-     pthread_exit(0); 
+void Lee( void *ptr ) { 
+    int iteraciones, i; 
+    iteraciones = (intptr_t) ptr; 
+    for (i = 0; i < iteraciones ; i++) {  
+        sem_wait(&trabajador_listo);
+        printf("Lector: Dame el siguiente número a procesar:");
+        scanf("%d",&dato);
+        printf("Lector: Recibi %d\n", dato);
+        sem_post(&dato_listo);
+    } 
+    pthread_exit(0); 
 }  
 
-
-/* 
-
-*/
-void Procesa( void *ptr ) 
-{ 
-     int iteraciones, i; 
-     iteraciones = (intptr_t) ptr; 
-     for (i = 0; i < iteraciones ; i++) 
-         {        
-         sem_wait(&dato_listo);
-         printf("Trabajador: procesaré %d\n", dato);
-         sem_post(&trabajador_listo);
-         
-         }
-     pthread_exit(0); 
+void Procesa( void *ptr ) { 
+    int iteraciones, i; 
+    iteraciones = (intptr_t) ptr; 
+    for (i = 0; i < iteraciones ; i++) {        
+        sem_wait(&dato_listo);
+        printf("Trabajador: procesaré %d\n", dato);
+        sem_post(&trabajador_listo); 
+    }
+    pthread_exit(0); 
 }  
